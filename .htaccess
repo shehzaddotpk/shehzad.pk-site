@@ -1,0 +1,39 @@
+# Shehzad.pk — static site on cPanel (LiteSpeed/Apache). WordPress rules from the previous site were intentionally removed.
+DirectoryIndex index.html index.php
+Options -Indexes
+
+RewriteEngine On
+# HTTPS + www canonical
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://www.shehzad.pk%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^shehzad\.pk$ [NC]
+RewriteRule ^ https://www.shehzad.pk%{REQUEST_URI} [L,R=301]
+# Folders get a trailing slash (/about -> /about/)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(.*)$ /$1/ [L,R=301]
+
+ErrorDocument 404 /404.html
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "DENY"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://challenges.cloudflare.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+  <FilesMatch "\.(woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(css|js|png|jpg|svg)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler (kept from previous site)
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php80___lsphp .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler
