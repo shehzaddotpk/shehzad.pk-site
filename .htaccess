@@ -3,11 +3,10 @@ DirectoryIndex index.html index.php
 Options -Indexes
 
 RewriteEngine On
-# HTTPS + www canonical
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://www.shehzad.pk%{REQUEST_URI} [L,R=301]
-RewriteCond %{HTTP_HOST} ^shehzad\.pk$ [NC]
-RewriteRule ^ https://www.shehzad.pk%{REQUEST_URI} [L,R=301]
+# Canonical host: https://shehzad.pk (no www). HTTP and www both 301 to it.
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www. [NC]
+RewriteRule ^ https://shehzad.pk%{REQUEST_URI} [L,R=301]
 # Folders get a trailing slash (/about -> /about/)
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} !/$
