@@ -2,5 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/shehzad/public_html/
-    - /bin/cp -R -f about api assets blog css fonts js $DEPLOYPATH
-    - /bin/cp -f index.html 404.html sitemap.xml robots.txt version.txt .htaccess $DEPLOYPATH
+    - /bin/bash deploy.sh $DEPLOYPATH
